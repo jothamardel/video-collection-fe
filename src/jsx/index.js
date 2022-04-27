@@ -47,6 +47,7 @@ const ContactOne = loadable(() => pMinDelay(import ('./page/contact'), 250), { f
 const ContactTwo = loadable(() => pMinDelay(import ('./page/contact/contact-two'), 250), { fallback: <Loading />});
 const Fashion = loadable(() => pMinDelay(import ('./page/'), 250), { fallback: <Loading />});
 const VerifyAccount = loadable(() => pMinDelay(import ('./page/Verify'), 250), { fallback: <Loading />});
+const AdminLogin = loadable(() => pMinDelay(import ('./page/admin'), 250), { fallback: <Loading />});
 
 
 
@@ -95,6 +96,7 @@ function Markup(props) {
 		{ path: Routes.productDetailsOne, el: ProductDetails },
 		{ path: Routes.productDetailsTwo, el: ProductDetailsTwos },
 		{ path: Routes.verify, el: VerifyAccount },
+		{ path: Routes.admin, el: AdminLogin },
 	]
 
 

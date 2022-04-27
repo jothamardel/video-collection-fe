@@ -52,5 +52,6 @@ export default Object.freeze({
 	productDetailsOne: '/product-details-one/:id',
 	productDetailsTwo: '/product-details-two/:id',
 	verify: '/verify',
-	termsAndCondition: '/terms-and-conditions'
+	termsAndCondition: '/terms-and-conditions',
+	admin: '/admin'
 })

@@ -9,10 +9,10 @@ const ShopGrid = () => {
     return (
         <>
             <Header />
-            <Banner title="Shop" />
+            {/* <Banner title="Shop" /> */}
             <Shop />
-            <InstgramSlider />
-            <Footer />
+            {/* <InstgramSlider /> */}
+            {/* <Footer /> */}
         </>
     )
 }

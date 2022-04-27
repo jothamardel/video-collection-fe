@@ -71,3 +71,8 @@ export const loginUser = (data, history) => async dispatch => {
 export const logoutUser = () => ({
 	type: ConstantTypes.LOGOUT_USER
 })
+
+export const loadAdmin = (data) => ({
+	type: ConstantTypes.LOAD_USER,
+	payload: data
+})
