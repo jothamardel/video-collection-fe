@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom'
+import { Link, Redirect, useHistory } from 'react-router-dom'
 import axios from 'axios'
 
 import img1 from '../../assets/img/team/team1.png'
+import Routes from '../../../utils/Routes';
 
 const AccountDetailsEdit = (props) => {
     const [loadValue, setLoadValue] = useState(0);
@@ -64,6 +65,10 @@ const AccountDetailsEdit = (props) => {
             setStatus(error.response.data.message)
         }
         setLoading(false);
+    }
+
+    if(user._id) {
+        return <Redirect to={Routes.home}/>
     }
 
 
