@@ -67,7 +67,7 @@ const AccountDetailsEdit = (props) => {
         setLoading(false);
     }
 
-    if(user._id) {
+    if(!user._id) {
         return <Redirect to={Routes.home}/>
     }
 
