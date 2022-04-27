@@ -29,6 +29,7 @@ const LoginArea = (props) => {
         return <Redirect to={Routes.home}/>
     }
 
+    console.log("Load value:::::::::::::::>", loading)
     
 
     return (

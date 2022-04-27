@@ -56,7 +56,7 @@ export const loginUser = (data, history) => async dispatch => {
 		console.log("Error==========>", error);
 			Swal.fire({
 				title: 'Error!',
-				text: error.response.data.message,
+				text: error.message,
 				icon: 'error',
 				showConfirmButton: true,
 			})
