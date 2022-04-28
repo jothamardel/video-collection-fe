@@ -60,6 +60,14 @@ const userReducer = (state = INITIAL_STATE, action = {}) => {
 					...action.payload
 				}
 			}
+
+		case ConstantTypes.SELECT_VIDEO: 
+			return {
+				...state,
+				video: action.payload
+			}
+
+		
 	
 	
 		default:

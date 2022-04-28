@@ -76,3 +76,8 @@ export const loadAdmin = (data) => ({
 	type: ConstantTypes.LOAD_USER,
 	payload: data
 })
+
+export const selectVideo = video => ({
+	type: ConstantTypes.SELECT_VIDEO,
+	payload: video
+})

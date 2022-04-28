@@ -5,13 +5,16 @@ import ProductCard from '../Common/Product/ProductCard'
 import Filter from './Filter'
 import { useSelector } from "react-redux";
 import Routes from '../../../utils/Routes';
-
+import { selectVideo } from '../../../redux/User/user.actions';
+import axios from 'axios';
 
 const Shop = (props) => {
 
     const [products, setProducts] = useState([])
     const [page, setPage] = useState(1)
     let allData = [...props.products.products];
+
+    const { selectVideo } = props;
 
     const randProduct = (page) => {
         if (page) {
@@ -21,8 +24,14 @@ const Shop = (props) => {
         }
     }
 
+    async function getAllUpload() {
+        const response = await axios(`${process.env.REACT_APP_API}/upload/all`)
+        setProducts(response.data.data);
+    }
+
+
     useEffect(() => {
-        setProducts(props.products.products);
+        getAllUpload();
     }, [])
 
     return (
@@ -36,17 +45,17 @@ const Shop = (props) => {
                                 <div className="product_wrappers_one">
                                     <div className="">
                                         <video controls style={{ width: '100%'}}>
-                                            <source src="" type='mp4'/>
+                                            <source src={data.video_url} type='video/mp4'/>
                                         </video>
                                     </div>
                                     <div className="content" style={{textAlign: 'start'}}>
 
                                         <p style={{marginBottom: '1rem'}}>FullName: </p>
-                                        <p style={{marginBottom: '1rem'}}>Car Brand: </p>
-                                        <p style={{marginBottom: '1rem'}}>Car Model: </p>
-                                        <p style={{marginBottom: '1rem'}}>Mobile Brand: </p>
-                                        <p style={{marginBottom: '1rem'}}>Damaged: </p>
-                                       <Link to={Routes.invoiceOne} style={{width: '100%'}}>
+                                        <p style={{marginBottom: '1rem'}}>Car Brand: {data.car_brand}</p>
+                                        <p style={{marginBottom: '1rem'}}>Car Model: {data.car_model}</p>
+                                        <p style={{marginBottom: '1rem'}}>Mobile Brand: {data.mobile_brand}</p>
+                                        <p style={{marginBottom: '1rem'}}>Damaged: {data.damaged}</p>
+                                       <Link to={Routes.invoiceOne} style={{width: '100%'}} onClick={() => selectVideo(data)}>
                                          <button style={{width: '100%'}}  type="button" className="theme-btn-one btn-black-overlay btn_md" onClick={() => console.log("props.data.id")}>View</button>
                                        </Link>
                                     </div>
@@ -81,4 +90,8 @@ const mapStateToProps = state => ({
     products: state.products
 })
 
-export default connect(mapStateToProps)(Shop)
+const mapDispatchToProps = dispatch => ({
+    selectVideo: video => dispatch(selectVideo(video))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Shop)

@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 
 const InvoiceOnes = (props) => {
   const history = useHistory();
-  const { user: { user } } = props;
+  const { user: { user, video } } = props;
   const routeChange = () => {
       history.goBack()
     };
@@ -26,16 +26,16 @@ const InvoiceOnes = (props) => {
               <div className="invoice-wrapper">
                 <div className="invoice-header">
                  <video controls style={{ width: '100%'}}>
-                   <source src="" type='' />
+                   <source src={video.video_url} type='' />
                  </video>
                 </div>
                 <div className="invoice-body table-responsive-md">
                   <div>
                     <h4 style={{marginBottom: '1rem'}}>Video uploaded by: </h4>
-                    <h4 style={{marginBottom: '1rem'}}>Car brand: </h4>
-                    <h4 style={{marginBottom: '1rem'}}>Car model: </h4>
-                    <h4 style={{marginBottom: '1rem'}}>Mobile brand: </h4>
-                    <h4 style={{marginBottom: '1rem'}}>Damaged: </h4>
+                    <h4 style={{marginBottom: '1rem'}}>Car brand: {video.car_brand}</h4>
+                    <h4 style={{marginBottom: '1rem'}}>Car model: {video.car_model}</h4>
+                    <h4 style={{marginBottom: '1rem'}}>Mobile brand: {video.mobile_brand}</h4>
+                    <h4 style={{marginBottom: '1rem'}}>Damaged: {video.damaged}</h4>
                     <h4 style={{marginBottom: '1rem'}}>Status: </h4>
                   </div>
                   {
@@ -92,19 +92,6 @@ const InvoiceOnes = (props) => {
                   </div>
                 }
 
-                {
-                  // !user.isAdmin &&
-                  // <div className="invoice-footer text-right">
-                  //   <div className="authorise-sign">
-                  //     <button className="theme-btn-one btn-black-overlay btn_sm" >Video Paid</button>
-    
-                  //   </div>
-                  //   <div className="buttons">
-                  //     <button className="theme-btn-one btn-black-overlay btn_sm" style={{background: 'green'}}>Edit</button>
-                  //     <button className="theme-btn-one btn-black-overlay btn_sm ml-2" style={{background: 'red'}}>Delete</button>
-                  //   </div>
-                  // </div>
-                }
               </div>
             </div>
           </div>
