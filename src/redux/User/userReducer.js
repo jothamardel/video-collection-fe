@@ -53,12 +53,11 @@ const userReducer = (state = INITIAL_STATE, action = {}) => {
 				user: {}
 			}
 
-		case ConstantTypes.LOGOUT_USER: 
+		case ConstantTypes.LOAD_USER: 
 			return {
 				...state,
 				user: {
-					...state.user,
-					user: action.payload
+					...action.payload
 				}
 			}
 	

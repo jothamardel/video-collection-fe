@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import ProductCard from '../Common/Product/ProductCard'
 import Filter from './Filter'
 import { useSelector } from "react-redux";
+import Routes from '../../../utils/Routes';
 
 
 const Shop = (props) => {
@@ -45,8 +46,9 @@ const Shop = (props) => {
                                         <p style={{marginBottom: '1rem'}}>Car Model: </p>
                                         <p style={{marginBottom: '1rem'}}>Mobile Brand: </p>
                                         <p style={{marginBottom: '1rem'}}>Damaged: </p>
-                                       
-                                        <button type="button" className="theme-btn-one btn-black-overlay btn_md" onClick={() => console.log("props.data.id")}>View</button>
+                                       <Link to={Routes.invoiceOne} style={{width: '100%'}}>
+                                         <button style={{width: '100%'}}  type="button" className="theme-btn-one btn-black-overlay btn_md" onClick={() => console.log("props.data.id")}>View</button>
+                                       </Link>
                                     </div>
                                 </div>
                             </div>

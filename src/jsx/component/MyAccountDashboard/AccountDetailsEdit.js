@@ -59,7 +59,7 @@ const AccountDetailsEdit = (props) => {
         }
 
         try {
-            const response = await axios.post('http://192.168.43.163:8000/upload', data);
+            const response = await axios.post(`${process.env.REACT_APP_API}/upload`, data);
             setStatus(response.data.message);
         } catch (error) {
             setStatus(error.response.data.message)

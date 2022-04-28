@@ -52,8 +52,8 @@ const TopHeader = (props) => {
                                             {/* <li><Link to="/order-tracking"><i className="fa fa-truck"></i> Track your Order</Link></li> */}
                                             <li className="after_login"><img src={avater} alt="avater" /> {user.fullname} <i className="fa fa-angle-down"></i>
                                                 <ul className="custom_dropdown">
-                                                    {/* <li><Link to="/my-account"><i className="fa fa-tachometer"></i> Dashboard</Link></li>
-                                                    <li><Link to="/my-account/customer-order"><i className="fa fa-cubes"></i> My Orders</Link></li> */}
+                                                    {/* <li><Link to="/my-account"><i className="fa fa-tachometer"></i> Dashboard</Link></li> */}
+                                                    <li><Link to={Routes.admin}><i className="fa fa-cubes"></i> I am Admin</Link></li>
                                                     <li >
                                                         <Link to={Routes.home} onClick={props.logoutUser} >
                                                             <i className="fa fa-sign-out"></i> Logout
