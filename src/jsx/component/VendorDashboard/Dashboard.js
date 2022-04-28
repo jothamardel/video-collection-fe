@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux';
-import BarChart from './BarChart'
-import LineChart from './LineChart'
-import { useSelector } from "react-redux";
 import { Link, Redirect } from 'react-router-dom';
-import ProductCard from '../Furniture/Product/ProductCard';
+
+
 import Routes from '../../../utils/Routes';
 import axios from 'axios';
 import { selectVideo } from '../../../redux/User/user.actions';
@@ -19,6 +17,7 @@ const Dashboard = (props) => {
 
     async function getUserUpload() {
         const response = await axios(`${process.env.REACT_APP_API}/upload/${user._id}`)
+        console.log(response.data.data);
         setUploads(response.data.data);
     }
 
@@ -44,7 +43,7 @@ const Dashboard = (props) => {
                     <div className="vendor_top_box">
                         <h2>{
                             uploads.filter(item => {
-                                if (item.damaged === true) {
+                                if (item.status.approved === false) {
                                     return item
                                 }
                             }).length
@@ -56,7 +55,7 @@ const Dashboard = (props) => {
                     <div className="vendor_top_box">
                         <h2>{
                              uploads.filter(item => {
-                                if (item.damaged === false) {
+                                if (item.status.approved) {
                                     return item
                                 }
                             }).length
@@ -97,6 +96,15 @@ const Dashboard = (props) => {
                     ))
                 }
             </div>
+                {
+                    !uploads.length &&
+                    <div style={{textAlign: 'center'}}>
+                        <Link to={Routes.accountEdit}>
+                            <button>+ Upload Video</button>
+                        </Link>
+                        <p style={{ textAlign: 'center'}}>No video(s) uploaded</p>
+                    </div>
+                }
         </>
     )
 }

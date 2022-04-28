@@ -6,14 +6,14 @@ import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom"
 import Swal from 'sweetalert2';
 
-import { logoutUser } from '../../../../redux/User/user.actions';
+import { loadAdmin, logoutUser } from '../../../../redux/User/user.actions';
 import Routes from '../../../../utils/Routes';
 
 const TopHeader = (props) => {
     let dispatch = useDispatch();
     const history = useHistory()
 
-    const { status, user } =  props.user;
+    const { status, user: { user }, loadAdmin } =  props;
 
     const logout = () => {
         Swal.fire({
@@ -34,7 +34,9 @@ const TopHeader = (props) => {
                     <div className="row" style={{alignItems: 'center'}}>
                         <div className="col-lg-6 col-md-6 col-sm-12 col-12">
                             <div className="top_header_left" style={{ padding: '1rem'}}>
-                                <p><Link to="/">Video Collection</Link></p>
+                                <p><Link to="/" onClick={() => {
+                                    loadAdmin({...user, isAdmin: false})
+                                }}>Video Collection</Link></p>
                             </div>
                         </div>
                         <div className="col-lg-6 col-md-6 col-sm-12 col-12">
@@ -77,7 +79,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    logoutUser: () => dispatch(logoutUser())
+    logoutUser: () => dispatch(logoutUser()),
+    loadAdmin: data => dispatch(loadAdmin(data))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopHeader);
