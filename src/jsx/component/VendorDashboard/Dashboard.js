@@ -12,18 +12,30 @@ const Dashboard = (props) => {
     // let products = useSelector((state) => state.products.products);
     let { user: { user }, selectVideo } = props;
     const [uploads, setUploads] = useState([]);
+    const [paymentStatus, setPaymentStatus] = useState();
 
    
 
     async function getUserUpload() {
         const response = await axios(`${process.env.REACT_APP_API}/upload/${user._id}`)
-        console.log(response.data.data);
         setUploads(response.data.data);
+    }
+    
+    
+    async function getPayment() {
+        const response = await axios(`${process.env.REACT_APP_API}/paid/${user._id}`)
+        console.log(response.data.data);
+        setPaymentStatus(response.data.data);
+        
     }
 
     useEffect(() => {
         getUserUpload();
     }, [uploads.length])
+
+    useEffect(() => {
+        getPayment();
+    }, [])
 
      if(!user._id) {
         return <Redirect to={Routes.login}/>
@@ -65,7 +77,7 @@ const Dashboard = (props) => {
                 </div>
                 <div className="col-lg-3 col-md-4 col-sm-6 col-12">
                     <div className="vendor_top_box">
-                        <h2>0</h2>
+                        <h2>{ paymentStatus && paymentStatus.total_videos_paid}</h2>
                         <h4>Total Payments</h4>
                     </div>
                 </div>

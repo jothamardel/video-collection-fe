@@ -11,6 +11,7 @@ import Swal from 'sweetalert2'
 
 const InvoiceTwos = (props) => {
     const [uploads, setUploads] = useState([]);
+    const [payStatus, setPayStatus] = useState();
     const [paid, setPaid] = useState(0);
     const { user: { userDetails } } = props;
     
@@ -19,14 +20,47 @@ const InvoiceTwos = (props) => {
         history.goBack()
       };
 
-       async function getUserUpload() {
+    async function getUserUpload() {
         const response = await axios(`${process.env.REACT_APP_API}/upload/${userDetails._id}`)
         console.log(response.data.data);
         setUploads(response.data.data);
     }
 
+    async function postPayment(data) {
+        const payment = {
+            total_videos: data.length,
+            unpaid_videos: data.length - paid,
+            total_videos_paid: paid,
+            user: userDetails._id
+        }
+
+        const response = await axios.post(`${process.env.REACT_APP_API}/paid`, payment)
+        setPayStatus(response.data.data);
+        Swal.fire({
+            title: 'Success!',
+            text: `Paid for ${response.data.data.total_videos_paid} videos`,
+            icon: 'success',
+            showConfirmButton: true,
+        })
+    }
+
+
+
     function pay() {
-        if (paid > uploads.length){
+        const approvedVideos = uploads.filter(item => item.status.approved);
+        console.log("Number of ", approvedVideos);
+
+        if (!(approvedVideos.length)){
+            Swal.fire({
+                title: 'Error!',
+                text: 'No approved videos listed',
+                icon: 'error',
+                showConfirmButton: true,
+            })
+            return
+        }
+
+        if (paid > approvedVideos.length){
             Swal.fire({
 				title: 'Error!',
 				text: 'Not allowed to pay for more than total number of videos',
@@ -35,7 +69,8 @@ const InvoiceTwos = (props) => {
 			})
             return
         }
-        if (!paid){
+
+        if (!(Number(paid))){
             Swal.fire({
 				title: 'Error!',
 				text: 'Please enter number of videos paid.',
@@ -44,14 +79,8 @@ const InvoiceTwos = (props) => {
 			})
             return
         }
-        Swal.fire({
-            title: 'Success!',
-            text: `Paid for ${paid} videos`,
-            icon: 'success',
-            showConfirmButton: true,
-        })
-        return
-
+        
+        postPayment(approvedVideos);
     }
 
     useEffect(() => {
@@ -150,7 +179,7 @@ const InvoiceTwos = (props) => {
                                     <input type="number" onChange={e => setPaid(e.currentTarget.value)} placeholder='Enter number of videos to paid for'/>
                                     <div onClick={pay} style={{cursor: 'pointer'}} className="table-footer">
                                         <span>Pay for:</span>
-                                        <span>{uploads.length} video(s)</span>
+                                        <span>{uploads.filter(item => item.status.approved).length} video(s)</span>
                                     </div>
                                 </div>
                             </div>
