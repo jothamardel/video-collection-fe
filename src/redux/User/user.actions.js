@@ -81,3 +81,8 @@ export const selectVideo = video => ({
 	type: ConstantTypes.SELECT_VIDEO,
 	payload: video
 })
+
+export const selectUser = user => ({
+	type: ConstantTypes.SELECT_USER,
+	payload: user
+})

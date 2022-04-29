@@ -5,17 +5,18 @@ import ProductCard from '../Common/Product/ProductCard'
 import Filter from './Filter'
 import { useSelector } from "react-redux";
 import Routes from '../../../utils/Routes';
-import { selectVideo } from '../../../redux/User/user.actions';
+import { selectVideo, selectUser } from '../../../redux/User/user.actions';
 import axios from 'axios';
+import Uploads from './Uploads';
 
 const Shop = (props) => {
     const [show, setShow] = useState('user')
-
+    const [users, setUsers] = useState([])
     const [products, setProducts] = useState([])
     const [page, setPage] = useState(1)
     let allData = [...props.products.products];
 
-    const { selectVideo } = props;
+    const { selectVideo, selectUser } = props;
 
     const randProduct = (page) => {
         if (page) {
@@ -28,6 +29,8 @@ const Shop = (props) => {
     async function getAllUpload() {
         const response = await axios(`${process.env.REACT_APP_API}/upload/all`)
         setProducts(response.data.data);
+        const usersEesponse = await axios(`${process.env.REACT_APP_API}/users`)
+        setUsers(usersEesponse.data.data);
     }
 
     useEffect(() => {
@@ -62,7 +65,7 @@ const Shop = (props) => {
                                             <p style={{marginBottom: '1rem'}}>Mobile Brand: {data.mobile_brand}</p>
                                             <p style={{marginBottom: '1rem'}}>Damaged: {data.damaged}</p>
                                         <Link to={Routes.invoiceOne} style={{width: '100%'}} onClick={() => selectVideo(data)}>
-                                            <button style={{width: '100%'}}  type="button" className="theme-btn-one btn-black-overlay btn_md" onClick={() => console.log("props.data.id")}>View</button>
+                                            <button style={{width: '100%'}}  type="button" className="theme-btn-one btn-black-overlay btn_md">View</button>
                                         </Link>
                                         </div>
                                     </div>
@@ -90,28 +93,28 @@ const Shop = (props) => {
                     {
                         show === 'user' &&
                         <div className="row">
-                            {/* {products.map((data, index) => (
-                                <div className="col-lg-3 col-md-4 col-sm-6 col-12" key={index}>
+                            {users.map((data, index) => (
+                                <div className="col-lg-3 col-md-4 col-sm-6 col-12" key={data._id}>
                                     <div className="product_wrappers_one">
-                                        <div className="">
+                                        {/* <div className="">
                                             <video controls style={{ width: '100%'}}>
                                                 <source src={data.video_url} type='video/mp4'/>
                                             </video>
-                                        </div>
+                                        </div> */}
                                         <div className="content" style={{textAlign: 'start'}}>
 
-                                            <p style={{marginBottom: '1rem'}}>FullName: </p>
-                                            <p style={{marginBottom: '1rem'}}>Car Brand: {data.car_brand}</p>
-                                            <p style={{marginBottom: '1rem'}}>Car Model: {data.car_model}</p>
-                                            <p style={{marginBottom: '1rem'}}>Mobile Brand: {data.mobile_brand}</p>
-                                            <p style={{marginBottom: '1rem'}}>Damaged: {data.damaged}</p>
-                                        <Link to={Routes.invoiceOne} style={{width: '100%'}} onClick={() => selectVideo(data)}>
-                                            <button style={{width: '100%'}}  type="button" className="theme-btn-one btn-black-overlay btn_md" onClick={() => console.log("props.data.id")}>View</button>
+                                            <p style={{marginBottom: '1rem'}}>Full Name: {data.fullName}</p>
+                                            <p style={{marginBottom: '1rem'}}>Email: {data.email}</p>
+                                            <p style={{marginBottom: '1rem'}}>Phone No: {data.phone}</p>
+                                            <p style={{marginBottom: '1rem'}}>Username: {data.username}</p>
+                                            <p style={{marginBottom: '1rem'}}>Uploads: <Uploads id={data._id}/></p>
+                                        <Link to={Routes.invoiceTwo} style={{width: '100%'}} onClick={() => selectUser(data)}>
+                                            <button style={{width: '100%'}}  type="button" className="theme-btn-one btn-black-overlay btn_md">Pay</button>
                                         </Link>
                                         </div>
                                     </div>
                                 </div>
-                            ))} */}
+                            ))}
                             <div className="col-lg-12">
                                 <ul className="pagination">
                                     <li className="page-item" onClick={(e) => { randProduct(page > 1 ? page - 1 : 0) }}>
@@ -142,7 +145,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    selectVideo: video => dispatch(selectVideo(video))
+    selectVideo: video => dispatch(selectVideo(video)),
+    selectUser: user => dispatch(selectUser(user))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Shop)

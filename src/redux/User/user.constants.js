@@ -12,6 +12,7 @@ export default Object.freeze({
 
 	LOAD_USER: 'LOAD_USER',
 
-	SELECT_VIDEO: 'SELECT_VIDEO'
+	SELECT_VIDEO: 'SELECT_VIDEO',
+	SELECT_USER: 'SELECT_USER'
 
 });

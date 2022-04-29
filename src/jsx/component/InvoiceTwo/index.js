@@ -4,10 +4,12 @@ import { useHistory } from 'react-router-dom'
 import bg1 from '../../assets/img/invoice/bg3.jpg'
 import logo from '../../assets/img/logo.png'
 import shap from '../../assets/img/invoice/shape.png'
+import { connect } from 'react-redux'
 
 
 
-const InvoiceTwos = () => {
+const InvoiceTwos = (props) => {
+    const { user: { userDetails } } = props;
     const history = useHistory();
     const routeChange = () => {
         history.goBack()
@@ -35,10 +37,10 @@ const InvoiceTwos = () => {
                                         <div className="address-detail">
                                             <div className="mt-2">
                                                 <h4 className="mb-2">
-                                                    2664 Tail Ends Road,
+                                                    { userDetails.fullName}
                                                 </h4>
-                                                <h4 className="mb-2"> ORADELL, New Jersey</h4>
-                                                <h4 className="mb-0">NJ, 07649</h4>
+                                                <h4 className="mb-2">{userDetails.bank_name}</h4>
+                                                <h4 className="mb-0">{userDetails.account_number}</h4>
                                             </div>
                                         </div>
                                     </div>
@@ -47,11 +49,11 @@ const InvoiceTwos = () => {
                                             <li><span>issue date :</span>
                                                 <h4> 20 march, 2020</h4>
                                             </li>
-                                            <li><span>invoice no :</span>
-                                                <h4> 908452</h4>
+                                            <li><span>Mobile no :</span>
+                                                <h4>{userDetails.phone}</h4>
                                             </li>
                                             <li><span>email :</span>
-                                                <h4> user@gmail.com</h4>
+                                                <h4>{ userDetails.email}</h4>
                                             </li>
                                         </ul>
                                     </div>
@@ -126,8 +128,8 @@ const InvoiceTwos = () => {
                                 <li>
                                     <i className="fa fa-map"></i>
                                     <div>
-                                        <h4>Andshop demo store</h4>
-                                        <h4>USA, 362351</h4>
+                                        <h4>Skillseed</h4>
+                                        <h4>Video Collection</h4>
                                     </div>
                                 </li>
                                 <li>
@@ -140,8 +142,7 @@ const InvoiceTwos = () => {
                                 <li>
                                     <i className="fa fa-envelope"></i>
                                     <div>
-                                        <h4>support@Andshop.com</h4>
-                                        <h4>demo@Andshop.com</h4>
+                                        <h4>support@skillseed.com</h4>
                                     </div>
                                 </li>
                             </ul>
@@ -156,4 +157,8 @@ const InvoiceTwos = () => {
     )
 }
 
-export default InvoiceTwos
+const mapStateProps = state => ({
+    user: state.user
+})
+
+export default connect(mapStateProps)(InvoiceTwos)
