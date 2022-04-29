@@ -1,19 +1,62 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 // import img
 import bg1 from '../../assets/img/invoice/bg3.jpg'
 import logo from '../../assets/img/logo.png'
 import shap from '../../assets/img/invoice/shape.png'
 import { connect } from 'react-redux'
-
+import axios from 'axios'
+import Swal from 'sweetalert2'
 
 
 const InvoiceTwos = (props) => {
+    const [uploads, setUploads] = useState([]);
+    const [paid, setPaid] = useState(0);
     const { user: { userDetails } } = props;
+    
     const history = useHistory();
     const routeChange = () => {
         history.goBack()
       };
+
+       async function getUserUpload() {
+        const response = await axios(`${process.env.REACT_APP_API}/upload/${userDetails._id}`)
+        console.log(response.data.data);
+        setUploads(response.data.data);
+    }
+
+    function pay() {
+        if (paid > uploads.length){
+            Swal.fire({
+				title: 'Error!',
+				text: 'Not allowed to pay for more than total number of videos',
+				icon: 'error',
+				showConfirmButton: true,
+			})
+            return
+        }
+        if (!paid){
+            Swal.fire({
+				title: 'Error!',
+				text: 'Please enter number of videos paid.',
+				icon: 'error',
+				showConfirmButton: true,
+			})
+            return
+        }
+        Swal.fire({
+            title: 'Success!',
+            text: `Paid for ${paid} videos`,
+            icon: 'success',
+            showConfirmButton: true,
+        })
+        return
+
+    }
+
+    useEffect(() => {
+        getUserUpload();
+    }, [uploads.length])
     return (
         <>
             <section className="theme-invoice-4 pb-100">
@@ -76,48 +119,33 @@ const InvoiceTwos = (props) => {
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
-                                            <th scope="col">description</th>
-                                            <th scope="col">price</th>
-                                            <th scope="col">hrs.</th>
+                                            <th scope="col">Car Brand</th>
+                                            <th scope="col">Car Model</th>
+                                            <th scope="col">Approved</th>
                                             <th scope="col">total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Logo Designing</td>
-                                            <td>$50</td>
-                                            <td>2</td>
-                                            <td>$100</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>website & banner design</td>
-                                            <td>$30</td>
-                                            <td>3</td>
-                                            <td>$90</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>frontend development</td>
-                                            <td>$95</td>
-                                            <td>1</td>
-                                            <td>$95</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">4</th>
-                                            <td>backend development</td>
-                                            <td>$95</td>
-                                            <td>1</td>
-                                            <td>$95</td>
-                                        </tr>
+                                        {
+                                            uploads.length > 0 &&
+                                            uploads.map(item => (
+                                                <tr key={item._id}>
+                                                    <th scope="row">1</th>
+                                                    <td>{item.car_brand}</td>
+                                                    <td>{item.car_model}</td>
+                                                    <td>{item.status.approved ? "Approved" : "Rejected"}</td>
+                                                    <td>$100</td>
+                                                </tr>
+                                            ))
+                                        }
                                     </tbody>
                                 </table>
                             </div>
                                 <div className="text-right">
-                                    <div className="table-footer">
-                                        <span>Grand Total:</span>
-                                        <span>$1933.00</span>
+                                    <input type="number" onChange={e => setPaid(e.currentTarget.value)} placeholder='Enter number of videos to paid for'/>
+                                    <div onClick={pay} style={{cursor: 'pointer'}} className="table-footer">
+                                        <span>Pay for:</span>
+                                        <span>{uploads.length} video(s)</span>
                                     </div>
                                 </div>
                             </div>
