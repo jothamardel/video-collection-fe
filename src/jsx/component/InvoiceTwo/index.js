@@ -128,15 +128,20 @@ const InvoiceTwos = (props) => {
                                     <tbody>
                                         {
                                             uploads.length > 0 &&
-                                            uploads.map(item => (
-                                                <tr key={item._id}>
-                                                    <th scope="row">1</th>
-                                                    <td>{item.car_brand}</td>
-                                                    <td>{item.car_model}</td>
-                                                    <td>{item.status.approved ? "Approved" : "Rejected"}</td>
-                                                    <td>$100</td>
-                                                </tr>
-                                            ))
+                                            uploads.map(item => {
+                                                if(item.status.approved) {
+
+                                                    return (
+                                                        <tr key={item._id}>
+                                                            <th scope="row">1</th>
+                                                            <td>{item.car_brand}</td>
+                                                            <td>{item.car_model}</td>
+                                                            <td>{item.status.approved ? "Approved" : "Rejected"}</td>
+                                                            <td>$100</td>
+                                                        </tr>
+                                                     )
+                                                }
+                                        })
                                         }
                                     </tbody>
                                 </table>
